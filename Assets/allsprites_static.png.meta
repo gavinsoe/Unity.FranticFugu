@@ -1,0 +1,154 @@
+fileFormatVersion: 2
+guid: ed9ca34832c0aa943935ccf34b3f350d
+timeCreated: 1428480082
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: allsprites_static_0
+    21300002: allsprites_static_1
+    21300004: allsprites_static_2
+    21300006: allsprites_static_3
+    21300008: allsprites_static_4
+    21300010: allsprites_static_5
+    21300012: allsprites_static_6
+    21300014: allsprites_static_7
+    21300016: allsprites_static_8
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: allsprites_static_0
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 803
+        width: 84
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_1
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 804
+        width: 85
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_2
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 806
+        width: 85
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_3
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 589
+        width: 120
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_4
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 598
+        width: 125
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_5
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 384
+        width: 201
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_6
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 393
+        width: 150
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_7
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 99
+        width: 245
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: allsprites_static_8
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 100
+        width: 205
+        height: 219
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
