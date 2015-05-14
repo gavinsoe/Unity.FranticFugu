@@ -5,6 +5,7 @@ public class EnemyController : MonoBehaviour {
     private Vector3 endPoint;
     private float speed;
     private Vector3 moveDirection;
+    public int enemyType;
 
 	// Use this for initialization
 	void Start () {
@@ -63,7 +64,53 @@ public class EnemyController : MonoBehaviour {
         moveDirection.Normalize();
          * */
 
-        speed = Random.Range(3f, 5f);
+        if (SpawnController.instance.phase == 0)
+        {
+            speed = 4f;
+        }
+        else if (SpawnController.instance.phase == 1)
+        {
+            speed = 2f;
+        }
+        else if (SpawnController.instance.phase == 2)
+        {
+            speed = 2f;
+        }
+        else if (SpawnController.instance.phase == 3)
+        {
+            speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 4)
+        {
+            speed = 4f;
+        }
+        else if (SpawnController.instance.phase == 5)
+        {
+            if (enemyType == 0)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 6)
+        {
+            if (enemyType == 0)
+                speed = 2f;
+            else
+                speed = 4f;
+        }
+        else if (SpawnController.instance.phase == 7)
+        {
+            speed = 4f;
+        }
+        else if (SpawnController.instance.phase == 8)
+        {
+            speed = 4f;
+        }
+        else
+        {
+            speed = 4f;
+        }
+        //speed = Random.Range(3f, 5f);
 	}
 	
 	// Update is called once per frame
