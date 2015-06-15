@@ -1,14 +1,16 @@
 fileFormatVersion: 2
-guid: 474f8c83079a0df4db30e2351c6b6096
-timeCreated: 1434354623
+guid: a21873372206ef7459eeb2aeffa3247a
+timeCreated: 1434353950
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: fugu_baby_body_eyes_fin_0
-    21300002: fugu_baby_eye_left
-    21300004: fugu_baby_eye_right
-    21300006: fugu_baby_mouth
-    21300008: fugu_baby_body
+    21300000: fugu_inflated_body
+    21300002: fugu_inflated_tail
+    21300004: fugu_inflated_fin_right
+    21300006: fugu_inflated_fin_left
+    21300008: fugu_inflated_eye_left
+    21300010: fugu_inflated_eye_right
+    21300012: fugu_inflated_mouth
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,53 +56,73 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: fugu_baby_body_eyes_fin_0
+    - name: fugu_inflated_body
       rect:
         serializedVersion: 2
-        x: 160
-        y: 253
-        width: 14
-        height: 18
+        x: 10
+        y: 66
+        width: 204
+        height: 219
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: fugu_baby_eye_left
+    - name: fugu_inflated_tail
       rect:
         serializedVersion: 2
-        x: 224
-        y: 253
-        width: 17
-        height: 17
+        x: 233
+        y: 211
+        width: 48
+        height: 61
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: fugu_baby_eye_right
+    - name: fugu_inflated_fin_right
       rect:
         serializedVersion: 2
-        x: 255
-        y: 254
-        width: 17
-        height: 17
+        x: 251
+        y: 144
+        width: 23
+        height: 32
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: fugu_baby_mouth
+    - name: fugu_inflated_fin_left
       rect:
         serializedVersion: 2
-        x: 240
-        y: 235
-        width: 18
-        height: 18
+        x: 250
+        y: 96
+        width: 25
+        height: 32
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: fugu_baby_body
+    - name: fugu_inflated_eye_left
       rect:
         serializedVersion: 2
-        x: 66
-        y: 72
-        width: 168
-        height: 154
+        x: 217
+        y: 42
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fugu_inflated_eye_right
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 42
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fugu_inflated_mouth
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 15
+        width: 26
+        height: 26
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
