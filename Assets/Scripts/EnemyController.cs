@@ -74,7 +74,7 @@ public class EnemyController : MonoBehaviour {
         }
         else if (SpawnController.instance.phase == 2)
         {
-            speed = 2f;
+            speed = 4f;
         }
         else if (SpawnController.instance.phase == 3)
         {
@@ -96,7 +96,7 @@ public class EnemyController : MonoBehaviour {
             if (enemyType == 0)
                 speed = 2f;
             else
-                speed = 4f;
+                speed = 6f;
         }
         else if (SpawnController.instance.phase == 7)
         {
@@ -105,6 +105,54 @@ public class EnemyController : MonoBehaviour {
         else if (SpawnController.instance.phase == 8)
         {
             speed = 4f;
+        }
+        else if (SpawnController.instance.phase == 9)
+        {
+            speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 10)
+        {
+            speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 11)
+        {
+            speed = 2f;
+        }
+        else if (SpawnController.instance.phase == 12)
+        {
+            speed = 2f;
+        }
+        else if (SpawnController.instance.phase == 13)
+        {
+            speed = 2f;
+        }
+        else if (SpawnController.instance.phase == 14)
+        {
+            if (enemyType == 1)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 15)
+        {
+            if (enemyType == 1)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 16)
+        {
+            if (enemyType == 2)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 17)
+        {
+            if (enemyType == 2)
+                speed = 2f;
+            else
+                speed = 6f;
         }
         else
         {

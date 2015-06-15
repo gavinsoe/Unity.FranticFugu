@@ -5,6 +5,7 @@ public class SpawnController : MonoBehaviour {
     public static SpawnController instance;
 
     private GameObject startCanvas, gameCanvas, pauseCanvas, endCanvas;
+    private GameObject videoCanvas;
 
     public GameObject player;
     public GameObject[] enemy;
@@ -16,6 +17,11 @@ public class SpawnController : MonoBehaviour {
     private float tickSetter;
     private int enemySetter;
     public int phase;
+    private double phaseTimer;
+    public int phasePicker;
+    private bool videoWatched;
+    private bool invincibility;
+    private float invincCounter;
 
     void Awake()
     {
@@ -33,6 +39,7 @@ public class SpawnController : MonoBehaviour {
             gameCanvas = GameObject.Find("GameCanvas");
             pauseCanvas = GameObject.Find("PauseCanvas");
             endCanvas = GameObject.Find("EndCanvas");
+            videoCanvas = GameObject.Find("VideoCanvas");
         }
         else if (instance != this)
         {
@@ -52,6 +59,8 @@ public class SpawnController : MonoBehaviour {
         tickSetter = 0.4f;
         enemySetter = 1;
         phase = 0;
+        videoWatched = false;
+        invincibility = false;
 
         spawnPoints[0] = new Vector3(bottomLeft.x - 2f, bottomLeft.y - 2f, 0);
         spawnPoints[1] = new Vector3(bottomLeft.x - 2f, bottomLeft.y + heightDiff, 0);
@@ -72,17 +81,35 @@ public class SpawnController : MonoBehaviour {
         tick = 0f;
         points = 0;
         paused = true;
+        phaseTimer = 30f;
+        phasePicker = Random.Range(0, 18);
 
         startCanvas.SetActive(true);
         gameCanvas.SetActive(false);
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
+        videoCanvas.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (!paused)
         {
+            if (invincibility)
+            {
+                if (invincCounter > 3f)
+                {
+                    GameObject temp = GameObject.FindGameObjectWithTag("Player");
+                    temp.GetComponent<PolygonCollider2D>().enabled = true;
+                    invincibility = false;
+                }
+                invincCounter += Time.deltaTime;
+            }
+            if (time > phaseTimer)
+            {
+                phaseTimer += 30f;
+                phasePicker = Random.Range(0, 18);
+            }
             time += Time.deltaTime;
             if (tick > tickSetter)
             {
@@ -106,9 +133,11 @@ public class SpawnController : MonoBehaviour {
         {
             Instantiate(player);
         }
+        phasePicker = Random.Range(0, 18);
         paused = false;
         time = 0f;
         tick = 0f;
+        videoWatched = false;
         startCanvas.SetActive(false);
         gameCanvas.SetActive(true);
         pauseCanvas.SetActive(false);
@@ -136,6 +165,55 @@ public class SpawnController : MonoBehaviour {
     public void EndGame()
     {
         paused = true;
+        startCanvas.SetActive(false);
+        gameCanvas.SetActive(false);
+        pauseCanvas.SetActive(false);
+        endCanvas.SetActive(true);
+
+        if (!videoWatched)
+        {
+            videoWatched = true;
+            videoCanvas.SetActive(true);
+        }
+        else
+        {
+            GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject item in list)
+            {
+                Destroy(item);
+            }
+            GameObject temp = GameObject.FindGameObjectWithTag("Player");
+            Destroy(temp);
+        }
+
+        // Do Highest score check and save
+        float highScore = PlayerPrefs.GetFloat("HighScore");
+        if (time > highScore)
+        {
+            PlayerPrefs.SetFloat("HighScore", time);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public void WatchVideo()
+    {
+        //Watch Video
+
+        invincibility = true;
+        invincCounter = 0f;
+        GameObject temp = GameObject.FindGameObjectWithTag("Player");
+        temp.GetComponent<PolygonCollider2D>().enabled = false;
+
+        paused = false;
+        startCanvas.SetActive(false);
+        gameCanvas.SetActive(true);
+        pauseCanvas.SetActive(false);
+        endCanvas.SetActive(false);
+        videoCanvas.SetActive(false);
+    }
+
+    public void DontWatchVideo()
+    {
         GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject item in list)
         {
@@ -143,86 +221,156 @@ public class SpawnController : MonoBehaviour {
         }
         GameObject temp = GameObject.FindGameObjectWithTag("Player");
         Destroy(temp);
-        startCanvas.SetActive(false);
-        gameCanvas.SetActive(false);
-        pauseCanvas.SetActive(false);
-        endCanvas.SetActive(true);
-        // Do Highest score check and save
+        videoCanvas.SetActive(false);
     }
 
     public void SpawnControl()
     {
-        if (time < 40f && time >= 0f)
+        int picker;
+        switch(phasePicker)
         {
-            phase = 0;
-            tickSetter = 0.6f;
-            enemySetter = 1;
-        }
-        else if (time < 80f && time >= 40f)
-        {
-            phase = 1;
-            tickSetter = 0.3f;
-            enemySetter = 0;
-        }
-        else if (time < 120f && time >= 80f)
-        {
-            phase = 2;
-            tickSetter = 0.3f;
-            enemySetter = 1;
-        }
-        else if (time < 160f && time >= 120f)
-        {
-            phase = 3;
-            tickSetter = 0.8f;
-            enemySetter = 0;
-        }
-        else if (time < 200f && time >= 160f)
-        {
-            phase = 4;
-            tickSetter = 0.6f;
-            enemySetter = Random.Range(0, 1);
-        }
-        else if (time < 240f && time >= 200f)
-        {
-            phase = 5;
-            tickSetter = 0.2f;
-            int picker = Random.Range(0, 10);
-            if (picker < 9)
-                enemySetter = 0;
-            else
+            // Medium speed medium amount Fugus
+            case 0:
+                phase = 0;
+                tickSetter = 0.6f;
                 enemySetter = 1;
-        }
-        else if (time < 280f && time >= 240f)
-        {
-            phase = 6;
-            tickSetter = 0.2f;
-            int picker = Random.Range(0, 10);
-            if (picker < 9)
+                break;
+            // Army of slow moving babies
+            case 1:
+                phase = 1;
+                tickSetter = 0.3f;
                 enemySetter = 0;
-            else
+                break;
+            // Medium speed medium amount of babies
+            case 2:
+                phase = 2;
+                tickSetter = 0.6f;
+                enemySetter = 0;
+                break;
+            // Fast speed less amount of babies
+            case 3:
+                phase = 3;
+                tickSetter = 0.7f;
+                enemySetter = 0;
+                break;
+            // Medium speed medium amount of spikies
+            case 4:
+                phase = 4;
+                tickSetter = 0.6f;
                 enemySetter = 2;
-        }
-        else if (time < 320f && time >= 280f)
-        {
-            phase = 7;
-            tickSetter = 0.6f;
-            enemySetter = Random.Range(0, 2);
-        }
-        else if (time < 360f && time >= 320f)
-        {
-            phase = 8;
-            tickSetter = 0.4f;
-            int picker = Random.Range(0, 10);
-            if (picker < 9)
-                enemySetter = Random.Range(0,1);
-            else
+                break;
+            // Slow speed more amount of babies and fast speed less amount of fugus
+            case 5:
+                phase = 5;
+                tickSetter = 0.4f;
+                picker = Random.Range(0, 10);
+                if (picker < 9)
+                    enemySetter = 0;
+                else
+                    enemySetter = 1;
+                break;
+            // Slow speed more amount of babies and fast speed less amount of spikies
+            case 6:
+                phase = 6;
+                tickSetter = 0.4f;
+                picker = Random.Range(0, 10);
+                if (picker < 9)
+                    enemySetter = 0;
+                else
+                    enemySetter = 2;
+                break;
+            // Medium speed medium amount of all types
+            case 7:
+                phase = 7;
+                tickSetter = 0.6f;
+                enemySetter = Random.Range(0, 2);
+                break;
+            // Medium speed more amount of all types with lesser spikies
+            case 8:
+                phase = 8;
+                tickSetter = 0.4f;
+                picker = Random.Range(0, 10);
+                if (picker < 9)
+                    enemySetter = Random.Range(0,1);
+                else
+                    enemySetter = 2;
+                break;
+            // Fast speed less amount of fugus
+            case 9:
+                phase = 9;
+                tickSetter = 0.7f;
+                enemySetter = 1;
+                break;
+            // Fast speed less amount of spikies
+            case 10:
+                phase = 10;
+                tickSetter = 0.7f;
                 enemySetter = 2;
-        }
-        else
-        {
-            tickSetter = 0.4f - ((time - 400f) / 10000);
-            phase = 9;
-            enemySetter = Random.Range(0, 2);
+                break;
+            // Slow speed more amount of babies
+            case 11:
+                phase = 11;
+                tickSetter = 0.4f;
+                enemySetter = 0;
+                break;
+            // Slow speed more amount of fugus
+            case 12:
+                phase = 12;
+                tickSetter = 0.4f;
+                enemySetter = 1;
+                break;
+            // Slow speed more amount of spikies
+            case 13:
+                phase = 13;
+                tickSetter = 0.4f;
+                enemySetter = 2;
+                break;
+            // Slow speed more amount of fugus and fast speed less amount of spikies
+            case 14:
+                phase = 14;
+                tickSetter = 0.4f;
+                picker = Random.Range(0, 10);
+                if (picker < 9)
+                    enemySetter = 1;
+                else
+                    enemySetter = 2;
+                break;
+            // Slow speed more amount of fugus and fast speed less amount of babies
+            case 15:
+                phase = 15;
+                tickSetter = 0.4f;
+                picker = Random.Range(0, 10);
+                if (picker < 9)
+                    enemySetter = 1;
+                else
+                    enemySetter = 0;
+                break;
+            // Slow speed more amount of spikies and fast speed less amount of babies
+            case 16:
+                phase = 16;
+                tickSetter = 0.4f;
+                picker = Random.Range(0, 10);
+                if (picker < 9)
+                    enemySetter = 2;
+                else
+                    enemySetter = 0;
+                break;
+            // Slow speed more amount of spikies and fast speed less amount of fugus
+            case 17:
+                phase = 17;
+                tickSetter = 0.4f;
+                picker = Random.Range(0, 10);
+                if (picker < 9)
+                    enemySetter = 2;
+                else
+                    enemySetter = 1;
+                break;
+            // Medium speed more amount of all types
+            default:
+                tickSetter = 0.4f - ((time - 400f) / 10000);
+                phase = 18;
+                enemySetter = Random.Range(0, 2);
+                break;
         }
         GameObject newEnemy = Instantiate(enemy[enemySetter]);
     }
