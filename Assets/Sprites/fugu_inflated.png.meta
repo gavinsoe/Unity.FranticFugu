@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a21873372206ef7459eeb2aeffa3247a
-timeCreated: 1434353950
+timeCreated: 1434361942
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -73,8 +73,8 @@ TextureImporter:
         y: 211
         width: 48
         height: 61
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 9
+      pivot: {x: .186930969, y: .17526646}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: fugu_inflated_fin_right
       rect:
@@ -83,8 +83,8 @@ TextureImporter:
         y: 144
         width: 23
         height: 32
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: fugu_inflated_fin_left
       rect:
@@ -93,8 +93,8 @@ TextureImporter:
         y: 96
         width: 25
         height: 32
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 5
+      pivot: {x: 1, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: fugu_inflated_eye_left
       rect:
