@@ -137,6 +137,7 @@ public class SpawnController : MonoBehaviour {
         paused = false;
         time = 0f;
         tick = 0f;
+        phaseTimer = 30f;
         videoWatched = false;
         startCanvas.SetActive(false);
         gameCanvas.SetActive(true);
