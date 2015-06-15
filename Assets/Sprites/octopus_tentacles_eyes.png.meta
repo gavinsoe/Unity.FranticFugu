@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 95efea6e6c0dc5d4a8fabe8a7ab8637f
-timeCreated: 1434352543
+timeCreated: 1434354045
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -64,8 +64,8 @@ TextureImporter:
         y: 156
         width: 45
         height: 28
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 9
+      pivot: {x: .738409758, y: .627719343}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: octopus_tentacle_2
       rect:
@@ -74,8 +74,8 @@ TextureImporter:
         y: 157
         width: 45
         height: 26
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 9
+      pivot: {x: .239752203, y: .619230986}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: octopus_tentacle_3
       rect:
@@ -84,8 +84,8 @@ TextureImporter:
         y: 106
         width: 46
         height: 26
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 9
+      pivot: {x: .684637845, y: .757894933}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: octopus_tentacle_4
       rect:
@@ -94,8 +94,8 @@ TextureImporter:
         y: 99
         width: 36
         height: 24
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 9
+      pivot: {x: .56640178, y: .944775283}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: octopus_tentacle_5
       rect:
@@ -104,8 +104,8 @@ TextureImporter:
         y: 106
         width: 44
         height: 28
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 9
+      pivot: {x: .306199849, y: .766474307}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: octopus_eye_left
       rect:
