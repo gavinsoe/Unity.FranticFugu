@@ -99,8 +99,8 @@ public class SpawnController : MonoBehaviour {
             {
                 if (invincCounter > 3f)
                 {
-                    GameObject temp = GameObject.FindGameObjectWithTag("Player");
-                    temp.GetComponent<PolygonCollider2D>().enabled = true;
+                    //GameObject temp = GameObject.FindGameObjectWithTag("Player");
+                    //temp.GetComponent<PolygonCollider2D>().enabled = true;
                     invincibility = false;
                 }
                 invincCounter += Time.deltaTime;
@@ -165,34 +165,37 @@ public class SpawnController : MonoBehaviour {
 
     public void EndGame()
     {
-        paused = true;
-        startCanvas.SetActive(false);
-        gameCanvas.SetActive(false);
-        pauseCanvas.SetActive(false);
-        endCanvas.SetActive(true);
+        if (!invincibility)
+        {
+            paused = true;
+            startCanvas.SetActive(false);
+            gameCanvas.SetActive(false);
+            pauseCanvas.SetActive(false);
+            endCanvas.SetActive(true);
 
-        if (!videoWatched)
-        {
-            videoWatched = true;
-            videoCanvas.SetActive(true);
-        }
-        else
-        {
-            GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
-            foreach (GameObject item in list)
+            if (!videoWatched)
             {
-                Destroy(item);
+                videoWatched = true;
+                videoCanvas.SetActive(true);
             }
-            GameObject temp = GameObject.FindGameObjectWithTag("Player");
-            Destroy(temp);
-        }
+            else
+            {
+                GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
+                foreach (GameObject item in list)
+                {
+                    Destroy(item);
+                }
+                GameObject temp = GameObject.FindGameObjectWithTag("Player");
+                Destroy(temp);
+            }
 
-        // Do Highest score check and save
-        float highScore = PlayerPrefs.GetFloat("HighScore");
-        if (time > highScore)
-        {
-            PlayerPrefs.SetFloat("HighScore", time);
-            PlayerPrefs.Save();
+            // Do Highest score check and save
+            float highScore = PlayerPrefs.GetFloat("HighScore");
+            if (time > highScore)
+            {
+                PlayerPrefs.SetFloat("HighScore", time);
+                PlayerPrefs.Save();
+            }
         }
     }
 
@@ -202,8 +205,8 @@ public class SpawnController : MonoBehaviour {
 
         invincibility = true;
         invincCounter = 0f;
-        GameObject temp = GameObject.FindGameObjectWithTag("Player");
-        temp.GetComponent<PolygonCollider2D>().enabled = false;
+        //GameObject temp = GameObject.FindGameObjectWithTag("Player");
+        //temp.GetComponent<PolygonCollider2D>().enabled = false;
 
         paused = false;
         startCanvas.SetActive(false);
