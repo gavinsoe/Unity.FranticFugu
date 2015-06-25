@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Soomla.Highway;
+using Soomla.Store;
 
 public class SpawnController : MonoBehaviour {
     public static SpawnController instance;
@@ -48,7 +50,8 @@ public class SpawnController : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
         spawnPoints = new Vector3[14];
         Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0));
         Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
@@ -84,11 +87,28 @@ public class SpawnController : MonoBehaviour {
         phaseTimer = 30f;
         phasePicker = Random.Range(0, 18);
 
-        startCanvas.SetActive(true);
-        gameCanvas.SetActive(false);
-        pauseCanvas.SetActive(false);
-        endCanvas.SetActive(false);
-        videoCanvas.SetActive(false);
+        // Load the home screen
+        Home();
+
+        // Initialise Soomla Highway (Online Statistics)
+        SoomlaHighway.Initialize();
+
+        // Initialise Soomla Store
+        SoomlaStore.Initialize(new FranticFuguAssets());
+
+        // Temporary for testing
+        /*StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, 450);
+        StoreInventory.TakeItem(FranticFuguAssets.CHAR_JELLYFISH_ID, 1);
+        StoreInventory.TakeItem(FranticFuguAssets.CHAR_CUTTLEFISH_ID, 1);
+        StoreInventory.TakeItem(FranticFuguAssets.CHAR_BOXFISH_ID, 1);
+        StoreInventory.TakeItem(FranticFuguAssets.CHAR_SEAHORSE_ID, 1);
+        StoreInventory.TakeItem(FranticFuguAssets.CHAR_STINGRAY_ID, 1);*/
+
+        // Make sure the octo is unlocked
+        if (StoreInventory.GetItemBalance(FranticFuguAssets.CHAR_OCTO_ID) <= 0)
+        {
+            StoreInventory.GiveItem(FranticFuguAssets.CHAR_OCTO_ID, 1);
+        }
 	}
 	
 	// Update is called once per frame
@@ -143,6 +163,29 @@ public class SpawnController : MonoBehaviour {
         gameCanvas.SetActive(true);
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
+        GUIStore.instance.Hide();
+        PCController.instance.gameObject.SetActive(true);
+    }
+
+    public void Store()
+    {
+        startCanvas.SetActive(false);
+        gameCanvas.SetActive(false);
+        pauseCanvas.SetActive(false);
+        endCanvas.SetActive(false);
+        GUIStore.instance.Show();
+        PCController.instance.gameObject.SetActive(false);
+    }
+
+    public void Home()
+    {
+        startCanvas.SetActive(true);
+        gameCanvas.SetActive(false);
+        pauseCanvas.SetActive(false);
+        endCanvas.SetActive(false);
+        videoCanvas.SetActive(false);
+        GUIStore.instance.Hide();
+        PCController.instance.gameObject.SetActive(true);
     }
 
     public void PauseGame()
@@ -152,6 +195,8 @@ public class SpawnController : MonoBehaviour {
         gameCanvas.SetActive(false);
         pauseCanvas.SetActive(true);
         endCanvas.SetActive(false);
+        GUIStore.instance.Hide();
+        PCController.instance.gameObject.SetActive(true);
     }
 
     public void UnpauseGame()
@@ -161,6 +206,8 @@ public class SpawnController : MonoBehaviour {
         gameCanvas.SetActive(true);
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
+        GUIStore.instance.Hide();
+        PCController.instance.gameObject.SetActive(true);
     }
 
     public void EndGame()
@@ -172,6 +219,8 @@ public class SpawnController : MonoBehaviour {
             gameCanvas.SetActive(false);
             pauseCanvas.SetActive(false);
             endCanvas.SetActive(true);
+            GUIStore.instance.Hide();
+            PCController.instance.gameObject.SetActive(true);
 
             if (!videoWatched)
             {
@@ -214,6 +263,8 @@ public class SpawnController : MonoBehaviour {
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
         videoCanvas.SetActive(false);
+        GUIStore.instance.Hide();
+        PCController.instance.gameObject.SetActive(true);
     }
 
     public void DontWatchVideo()

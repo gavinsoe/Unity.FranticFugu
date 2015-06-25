@@ -67,6 +67,7 @@ public class FranticFuguAssets : IStoreAssets
         };
     }
 
+
     #region Virtual Currencies
 
     public static VirtualCurrency CURRENCY_SPONGE = new VirtualCurrency(
@@ -116,7 +117,7 @@ public class FranticFuguAssets : IStoreAssets
         "Seahorse",
         "A cute lil dragon",
         CHAR_SEAHORSE_ID,
-        new PurchaseWithVirtualItem(CURRENCY_SPONGE_ID, 150)
+        new PurchaseWithVirtualItem(CURRENCY_SPONGE_ID, 100)
     );
 
     public static VirtualGood CHAR_STINGRAY = new EquippableVG(
@@ -124,7 +125,7 @@ public class FranticFuguAssets : IStoreAssets
         "Stingray",
         "I sting.",
         CHAR_STINGRAY_ID,
-        new PurchaseWithVirtualItem(CURRENCY_SPONGE_ID, 200)
+        new PurchaseWithVirtualItem(CURRENCY_SPONGE_ID, 100)
     );
 
     #endregion

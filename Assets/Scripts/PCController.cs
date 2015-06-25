@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PCController : MonoBehaviour {
+public class PCController : MonoBehaviour 
+{
+    public static PCController instance;
 
     public float moveSpeed;
     public float sensitivity;
@@ -15,8 +17,23 @@ public class PCController : MonoBehaviour {
 
     private float worldWidth, worldHeight;
 
+    void Awake()
+    {
+        // make sure there is only 1 instance of this class.
+        if (instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
         moveDirection = Vector2.right;
         moveToward = transform.position;
         isMoving = false;
