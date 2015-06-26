@@ -8,9 +8,14 @@ public class EnemyController : MonoBehaviour {
     public int enemyType;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
         int start = Random.Range(0, 13);
         int end = 0;
+
+        // Update the sprite layers to prevent the eyes from staying on top of all bodies
+        UpdateSortingLayer(start);
+
         if (start == 0)
         {
             end = Random.Range(6, 9);
@@ -212,6 +217,17 @@ public class EnemyController : MonoBehaviour {
         {
             // Dead
             SpawnController.instance.EndGame();
+        }
+    }
+
+    private void UpdateSortingLayer(int startPoint)
+    {
+        // Retrieve all child sprite components
+        var spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+
+        foreach(var sprite in spriteRenderers)
+        {
+            sprite.sortingOrder += (startPoint * 3);
         }
     }
 }
