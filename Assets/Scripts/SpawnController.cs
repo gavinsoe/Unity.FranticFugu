@@ -178,7 +178,7 @@ public class SpawnController : MonoBehaviour {
                 tick += Time.deltaTime;
             }
 
-            if (!lootSpawned && time >= 60 && timeTillNextLoot < 0)
+            if (!lootSpawned && time > 30 && timeTillNextLoot < 0)
             {
                 SpawnLoot();
             }
@@ -345,6 +345,13 @@ public class SpawnController : MonoBehaviour {
         invincCounter = 0f;
         //GameObject temp = GameObject.FindGameObjectWithTag("Player");
         //temp.GetComponent<PolygonCollider2D>().enabled = false;
+
+        int chance = Random.Range(0, 1);
+        if (chance == 1)
+        {
+            int minutes = Mathf.FloorToInt(time) / 60;
+            StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
+        }
 
         paused = false;
         startCanvas.SetActive(false);
