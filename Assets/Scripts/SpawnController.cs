@@ -24,6 +24,7 @@ public class SpawnController : MonoBehaviour {
     private bool videoWatched;
     private bool invincibility;
     private float invincCounter;
+    public bool phaseChange;
 
     public GameObject loot;
     public float lootTimer;
@@ -91,8 +92,9 @@ public class SpawnController : MonoBehaviour {
         tick = 0f;
         points = 0;
         paused = true;
-        phaseTimer = 30f;
-        phasePicker = Random.Range(0, 18);
+        phaseTimer = 20f;
+        phasePicker = Random.Range(0, 7);
+        phaseChange = false;
 
         // Initialise Soomla Highway (Online Statistics)
         SoomlaHighway.Initialize();
@@ -112,6 +114,7 @@ public class SpawnController : MonoBehaviour {
         if (StoreInventory.GetItemBalance(FranticFuguAssets.CHAR_OCTO_ID) <= 0)
         {
             StoreInventory.GiveItem(FranticFuguAssets.CHAR_OCTO_ID, 1);
+            StoreInventory.EquipVirtualGood(FranticFuguAssets.CHAR_OCTO_ID);
         }
 
         // Load the home screen
@@ -137,8 +140,27 @@ public class SpawnController : MonoBehaviour {
             }
             if (time > phaseTimer)
             {
-                phaseTimer += 30f;
-                phasePicker = Random.Range(0, 18);
+                phaseChange = true;
+                if (time <= 60f)
+                {
+                    phasePicker = Random.Range(0, 7);
+                }
+                else if (time <= 120f) 
+                {
+                    phasePicker = Random.Range(8, 11);
+                }
+                else if (time <= 180f)
+                {
+                    phasePicker = Random.Range(12, 17);
+                }
+                else if (time <= 240f)
+                {
+                    phasePicker = Random.Range(18, 24);
+                }
+                else
+                {
+                    phasePicker = Random.Range(25, 28);
+                }
             }
             time += Time.deltaTime;
             timeTillNextLoot -= Time.deltaTime;
@@ -171,11 +193,11 @@ public class SpawnController : MonoBehaviour {
         }
         ResetField();
 
-        phasePicker = Random.Range(0, 18);
+        phasePicker = Random.Range(0, 7);
         paused = false;
         time = 0f;
         tick = 0f;
-        phaseTimer = 30f;
+        phaseTimer = 20f;
         videoWatched = false;
         startCanvas.SetActive(false);
         gameCanvas.SetActive(true);
@@ -298,7 +320,19 @@ public class SpawnController : MonoBehaviour {
             if (StoreInventory.IsVirtualGoodEquipped(character.id))
             {
                 Instantiate(character.prefab);
-                break;
+                return;
+            }
+        }
+
+        // if you reach this point no character is equipped, hence equip the octo
+        StoreInventory.EquipVirtualGood(FranticFuguAssets.CHAR_OCTO_ID);
+        // Try to equip again
+        foreach (var character in characters)
+        {
+            if (StoreInventory.IsVirtualGoodEquipped(character.id))
+            {
+                Instantiate(character.prefab);
+                return;
             }
         }
     }
@@ -337,150 +371,294 @@ public class SpawnController : MonoBehaviour {
     public void SpawnControl()
     {
         int picker;
+        double phaseLength = 20f;
         switch(phasePicker)
         {
-            // Medium speed medium amount Fugus
+            // Medium speed medium amount of babies | Tier 1
             case 0:
                 phase = 0;
                 tickSetter = 0.6f;
-                enemySetter = 1;
+                enemySetter = 0;
+                phaseLength = 20f;
                 break;
-            // Army of slow moving babies
+
+            // Slow speed more amount of babies | Tier 1
             case 1:
                 phase = 1;
-                tickSetter = 0.3f;
+                tickSetter = 0.4f;
                 enemySetter = 0;
+                phaseLength = 20f;
                 break;
-            // Medium speed medium amount of babies
+
+            // Slow speed medium amount Fugus | Tier 1
             case 2:
                 phase = 2;
                 tickSetter = 0.6f;
-                enemySetter = 0;
+                enemySetter = 1;
+                phaseLength = 20f;
                 break;
-            // Fast speed less amount of babies
+
+            // Slow speed medium amount of babies | Tier 1
             case 3:
                 phase = 3;
-                tickSetter = 0.7f;
+                tickSetter = 0.6f;
                 enemySetter = 0;
+                phaseLength = 20f;
                 break;
-            // Medium speed medium amount of spikies
+
+            // Fast speed very low amount of babies | Tier 1
             case 4:
                 phase = 4;
-                tickSetter = 0.6f;
-                enemySetter = 2;
+                tickSetter = 0.9f;
+                enemySetter = 0;
+                phaseLength = 20f;
                 break;
-            // Slow speed more amount of babies and fast speed less amount of fugus
+
+            // Slow speed less amount of spikies | Tier 1
             case 5:
                 phase = 5;
+                tickSetter = 0.7f;
+                enemySetter = 2;
+                phaseLength = 20f;
+                break;
+
+            // Medium speed less amount of spikies | Tier 1
+            case 6:
+                phase = 6;
+                tickSetter = 0.7f;
+                enemySetter = 2;
+                phaseLength = 20f;
+                break;
+
+            // Fast speed very low amount of spikies | Tier 1
+            case 7:
+                phase = 7;
+                tickSetter = 0.9f;
+                enemySetter = 2;
+                phaseLength = 20f;
+                break;
+
+            // Fast speed medium amount of fugus | Tier 2
+            case 8:
+                phase = 8;
+                tickSetter = 0.6f;
+                enemySetter = 1;
+                phaseLength = 20f;
+                break;
+
+            // Medium speed medium amount Fugus | Tier 2
+            case 9:
+                phase = 9;
+                tickSetter = 0.6f;
+                enemySetter = 1;
+                phaseLength = 20f;
+                break;
+
+            // Army of slow moving babies | Tier 2
+            case 10:
+                phase = 10;
+                tickSetter = 0.3f;
+                enemySetter = 0;
+                phaseLength = 20f;
+                break;
+
+            // Slow speed medium amount of spikies | Tier 2
+            case 11:
+                phase = 11;
+                tickSetter = 0.6f;
+                enemySetter = 2;
+                phaseLength = 20f;
+                break;
+
+            // Fast speed less amount of babies | Tier 3
+            case 12:
+                phase = 12;
+                tickSetter = 0.7f;
+                enemySetter = 0;
+                phaseLength = 20f;
+                break;
+
+            // Medium speed medium amount of spikies | Tier 3
+            case 13:
+                phase = 13;
+                tickSetter = 0.6f;
+                enemySetter = 2;
+                phaseLength = 20f;
+                break;
+
+            // Medium speed medium amount of all types | Tier 3
+            case 14:
+                phase = 14;
+                tickSetter = 0.6f;
+                enemySetter = Random.Range(0, 2);
+                phaseLength = 20f;
+                break;
+
+            // Fast speed less amount of fugus | Tier 3
+            case 15:
+                phase = 15;
+                tickSetter = 0.7f;
+                enemySetter = 1;
+                phaseLength = 20f;
+                break;
+
+            // Slow speed more amount of fugus | Tier 3
+            case 16:
+                phase = 16;
                 tickSetter = 0.4f;
+                enemySetter = 1;
+                phaseLength = 20f;
+                break;
+
+            // Slow speed more amount of spikies | Tier 3
+            case 17:
+                phase = 17;
+                tickSetter = 0.4f;
+                enemySetter = 2;
+                phaseLength = 20f;
+                break;
+
+            // Slow speed more amount of babies and fast speed less amount of fugus | Tier 4
+            case 18:
+                phase = 18;
+                tickSetter = 0.4f;
+                phaseLength = 20f;
                 picker = Random.Range(0, 10);
                 if (picker < 9)
                     enemySetter = 0;
                 else
                     enemySetter = 1;
                 break;
-            // Slow speed more amount of babies and fast speed less amount of spikies
-            case 6:
-                phase = 6;
+
+            // Slow speed more amount of babies and fast speed less amount of spikies | Tier 4
+            case 19:
+                phase = 19;
                 tickSetter = 0.4f;
+                phaseLength = 20f;
                 picker = Random.Range(0, 10);
                 if (picker < 9)
                     enemySetter = 0;
                 else
                     enemySetter = 2;
                 break;
-            // Medium speed medium amount of all types
-            case 7:
-                phase = 7;
-                tickSetter = 0.6f;
-                enemySetter = Random.Range(0, 2);
-                break;
-            // Medium speed more amount of all types with lesser spikies
-            case 8:
-                phase = 8;
+            
+            // Medium speed more amount of all types with lesser spikies | Tier 4
+            case 20:
+                phase = 20;
                 tickSetter = 0.4f;
+                phaseLength = 20f;
                 picker = Random.Range(0, 10);
-                if (picker < 9)
+                if (picker < 8)
                     enemySetter = Random.Range(0,1);
                 else
                     enemySetter = 2;
                 break;
-            // Fast speed less amount of fugus
-            case 9:
-                phase = 9;
-                tickSetter = 0.7f;
-                enemySetter = 1;
-                break;
-            // Fast speed less amount of spikies
-            case 10:
-                phase = 10;
+            
+            // Fast speed less amount of spikies | Tier 4
+            case 21:
+                phase = 21;
                 tickSetter = 0.7f;
                 enemySetter = 2;
+                phaseLength = 20f;
                 break;
-            // Slow speed more amount of babies
-            case 11:
-                phase = 11;
+            
+            // Slow speed more amount of fugus and fast speed less amount of spikies | Tier 4
+            case 22:
+                phase = 22;
                 tickSetter = 0.4f;
-                enemySetter = 0;
-                break;
-            // Slow speed more amount of fugus
-            case 12:
-                phase = 12;
-                tickSetter = 0.4f;
-                enemySetter = 1;
-                break;
-            // Slow speed more amount of spikies
-            case 13:
-                phase = 13;
-                tickSetter = 0.4f;
-                enemySetter = 2;
-                break;
-            // Slow speed more amount of fugus and fast speed less amount of spikies
-            case 14:
-                phase = 14;
-                tickSetter = 0.4f;
+                phaseLength = 20f;
                 picker = Random.Range(0, 10);
                 if (picker < 9)
                     enemySetter = 1;
                 else
                     enemySetter = 2;
                 break;
-            // Slow speed more amount of fugus and fast speed less amount of babies
-            case 15:
-                phase = 15;
+
+            // Slow speed more amount of fugus and fast speed less amount of babies | Tier 4
+            case 23:
+                phase = 23;
                 tickSetter = 0.4f;
+                phaseLength = 20f;
                 picker = Random.Range(0, 10);
                 if (picker < 9)
                     enemySetter = 1;
                 else
                     enemySetter = 0;
                 break;
-            // Slow speed more amount of spikies and fast speed less amount of babies
-            case 16:
-                phase = 16;
-                tickSetter = 0.4f;
+
+            // Medium speed less amount of babies and more amount of fugus and spikies | Tier 4
+            case 24:
+                phase = 24;
+                tickSetter = 0.6f;
+                phaseLength = 20f;
                 picker = Random.Range(0, 10);
-                if (picker < 9)
+                if (picker < 2)
+                    enemySetter = 0;
+                else
+                {
+                    enemySetter = Random.Range(1, 2);
+                }
+                break;
+            
+            // Slow speed more amount of spikies and fast speed less amount of babies | Tier 5
+            case 25:
+                phase = 25;
+                tickSetter = 0.5f;
+                phaseLength = 20f;
+                picker = Random.Range(0, 10);
+                if (picker < 8)
                     enemySetter = 2;
                 else
                     enemySetter = 0;
                 break;
-            // Slow speed more amount of spikies and fast speed less amount of fugus
-            case 17:
-                phase = 17;
-                tickSetter = 0.4f;
+            // Slow speed more amount of spikies and fast speed less amount of fugus | Tier 5
+            case 26:
+                phase = 26;
+                tickSetter = 0.5f;
+                phaseLength = 20f;
                 picker = Random.Range(0, 10);
-                if (picker < 9)
+                if (picker < 7)
                     enemySetter = 2;
                 else
                     enemySetter = 1;
                 break;
+            
+            // Slow speed slightly more amount of babies and fast speed slightly less amount of fugus | Tier 5
+            case 27:
+                phase = 27;
+                tickSetter = 0.4f;
+                phaseLength = 20f;
+                picker = Random.Range(0, 10);
+                if (picker < 6)
+                    enemySetter = 0;
+                else
+                    enemySetter = 1;
+                break;
+            
+            // Slow speed medium amount of fugus and fast speed slightly less amount of babies | Tier 5
+            case 28:
+                phase = 28;
+                tickSetter = 0.4f;
+                phaseLength = 20f;
+                picker = Random.Range(0, 10);
+                if (picker < 7)
+                    enemySetter = 1;
+                else
+                    enemySetter = 0;
+                break;
+            
             // Medium speed more amount of all types
             default:
                 tickSetter = 0.4f - ((time - 400f) / 10000);
                 phase = 18;
                 enemySetter = Random.Range(0, 2);
+                phaseLength = 20f;
                 break;
+        }
+        if (phaseChange)
+        {
+            phaseChange = false;
+            phaseTimer += phaseLength;
         }
         GameObject newEnemy = Instantiate(enemy[enemySetter]);
     }

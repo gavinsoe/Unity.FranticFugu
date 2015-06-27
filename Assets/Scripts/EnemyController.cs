@@ -79,45 +79,39 @@ public class EnemyController : MonoBehaviour {
         }
         else if (SpawnController.instance.phase == 2)
         {
-            speed = 4f;
+            speed = 2f;
         }
         else if (SpawnController.instance.phase == 3)
         {
-            speed = 6f;
+            speed = 2f;
         }
         else if (SpawnController.instance.phase == 4)
         {
-            speed = 4f;
+            speed = 6f;
         }
         else if (SpawnController.instance.phase == 5)
         {
-            if (enemyType == 0)
-                speed = 2f;
-            else
-                speed = 6f;
+            speed = 2f;
         }
         else if (SpawnController.instance.phase == 6)
         {
-            if (enemyType == 0)
-                speed = 2f;
-            else
-                speed = 6f;
+            speed = 4f;
         }
         else if (SpawnController.instance.phase == 7)
         {
-            speed = 4f;
+            speed = 6f;
         }
         else if (SpawnController.instance.phase == 8)
         {
-            speed = 4f;
+            speed = 6f;
         }
         else if (SpawnController.instance.phase == 9)
         {
-            speed = 6f;
+            speed = 4f;
         }
         else if (SpawnController.instance.phase == 10)
         {
-            speed = 6f;
+            speed = 2f;
         }
         else if (SpawnController.instance.phase == 11)
         {
@@ -125,36 +119,93 @@ public class EnemyController : MonoBehaviour {
         }
         else if (SpawnController.instance.phase == 12)
         {
-            speed = 2f;
+            speed = 6f;
         }
         else if (SpawnController.instance.phase == 13)
         {
-            speed = 2f;
+            speed = 4f;
         }
         else if (SpawnController.instance.phase == 14)
         {
-            if (enemyType == 1)
-                speed = 2f;
-            else
-                speed = 6f;
+            speed = 4f;
         }
         else if (SpawnController.instance.phase == 15)
         {
+            speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 16)
+        {
+            speed = 2f;
+        }
+        else if (SpawnController.instance.phase == 17)
+        {
+            speed = 2f;
+        }
+        else if (SpawnController.instance.phase == 18)
+        {
+            if (enemyType == 0)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 19)
+        {
+            if (enemyType == 0)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 20)
+        {
+            speed = 4f;
+        }
+        
+        else if (SpawnController.instance.phase == 21)
+        {
+            speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 22)
+        {
             if (enemyType == 1)
                 speed = 2f;
             else
                 speed = 6f;
         }
-        else if (SpawnController.instance.phase == 16)
+        else if (SpawnController.instance.phase == 23)
+        {
+            if (enemyType == 1)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 24)
+        {
+            speed = 4f;
+        }
+        else if (SpawnController.instance.phase == 25)
         {
             if (enemyType == 2)
                 speed = 2f;
             else
                 speed = 6f;
         }
-        else if (SpawnController.instance.phase == 17)
+        else if (SpawnController.instance.phase == 26)
         {
             if (enemyType == 2)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 27)
+        {
+            if (enemyType == 0)
+                speed = 2f;
+            else
+                speed = 6f;
+        }
+        else if (SpawnController.instance.phase == 28)
+        {
+            if (enemyType == 1)
                 speed = 2f;
             else
                 speed = 6f;
