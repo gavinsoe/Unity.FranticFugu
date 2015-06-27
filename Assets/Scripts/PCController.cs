@@ -20,20 +20,22 @@ public class PCController : MonoBehaviour
     void Awake()
     {
         // make sure there is only 1 instance of this class.
-        if (instance == null)
-        {
+        //if (instance == null)
+        //{
             DontDestroyOnLoad(gameObject);
             instance = this;
-        }
+        //}
+            /*
         else if (instance != this)
         {
             Destroy(gameObject);
-        }
+        }*/
     }
 
 	// Use this for initialization
 	void Start () 
     {
+        transform.position = new Vector3(0, 0, 0);
         moveDirection = Vector2.right;
         moveToward = transform.position;
         isMoving = false;
@@ -104,6 +106,11 @@ public class PCController : MonoBehaviour
              */
         }
 	}
+
+    public void DestroyCharacter()
+    {
+        Destroy(gameObject);
+    }
 
     /*
     void OnTriggerEnter(Collider collider)

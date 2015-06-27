@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\GUI\GUIBaseClass.cs" />
     <Compile Include="Assets\Scripts\GUI\GUIStore.cs" />
     <Compile Include="Assets\Scripts\HighScoreGUIController.cs" />
+    <Compile Include="Assets\Scripts\LootController.cs" />
     <Compile Include="Assets\Scripts\PCController.cs" />
     <Compile Include="Assets\Scripts\PhaseTextController.cs" />
     <Compile Include="Assets\Scripts\PointsGUIController.cs" />

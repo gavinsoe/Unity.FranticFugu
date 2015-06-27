@@ -25,6 +25,13 @@ public class SpawnController : MonoBehaviour {
     private bool invincibility;
     private float invincCounter;
 
+    public GameObject loot;
+    public float lootTimer;
+    private float timeTillNextLoot;
+    private bool lootSpawned;
+
+    public Character[] characters;
+    
     void Awake()
     {
         // Forces a different code path in the BinaryFormatter that doesn't rely on run-time code generation (which would break on iOS).
@@ -87,9 +94,6 @@ public class SpawnController : MonoBehaviour {
         phaseTimer = 30f;
         phasePicker = Random.Range(0, 18);
 
-        // Load the home screen
-        Home();
-
         // Initialise Soomla Highway (Online Statistics)
         SoomlaHighway.Initialize();
 
@@ -109,6 +113,12 @@ public class SpawnController : MonoBehaviour {
         {
             StoreInventory.GiveItem(FranticFuguAssets.CHAR_OCTO_ID, 1);
         }
+
+        // Load the home screen
+        Home();
+
+        // Reset loot timer
+        ResetLootTimer();
 	}
 	
 	// Update is called once per frame
@@ -131,6 +141,7 @@ public class SpawnController : MonoBehaviour {
                 phasePicker = Random.Range(0, 18);
             }
             time += Time.deltaTime;
+            timeTillNextLoot -= Time.deltaTime;
             if (tick > tickSetter)
             {
                 tick = 0;
@@ -144,15 +155,22 @@ public class SpawnController : MonoBehaviour {
             {
                 tick += Time.deltaTime;
             }
+
+            if (!lootSpawned && time >= 60 && timeTillNextLoot < 0)
+            {
+                SpawnLoot();
+            }
         }
 	}
 
     public void StartGame()
     {
-        if (GameObject.FindGameObjectWithTag("Player") == null)
+        if (PCController.instance != null)
         {
-            Instantiate(player);
+            PCController.instance.gameObject.SetActive(true);
         }
+        ResetField();
+
         phasePicker = Random.Range(0, 18);
         paused = false;
         time = 0f;
@@ -164,7 +182,6 @@ public class SpawnController : MonoBehaviour {
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
         GUIStore.instance.Hide();
-        PCController.instance.gameObject.SetActive(true);
     }
 
     public void Store()
@@ -179,6 +196,7 @@ public class SpawnController : MonoBehaviour {
 
     public void Home()
     {
+        ResetField();
         startCanvas.SetActive(true);
         gameCanvas.SetActive(false);
         pauseCanvas.SetActive(false);
@@ -229,13 +247,7 @@ public class SpawnController : MonoBehaviour {
             }
             else
             {
-                GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
-                foreach (GameObject item in list)
-                {
-                    Destroy(item);
-                }
-                GameObject temp = GameObject.FindGameObjectWithTag("Player");
-                Destroy(temp);
+                CleanGameField();
             }
 
             // Do Highest score check and save
@@ -244,6 +256,49 @@ public class SpawnController : MonoBehaviour {
             {
                 PlayerPrefs.SetFloat("HighScore", time);
                 PlayerPrefs.Save();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Simply destroys all the objects in the game
+    /// </summary>
+    private void CleanGameField()
+    {
+        // Destroy enemies
+        GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject item in list)
+        {
+            Destroy(item);
+        }
+
+        // Destroy loot
+        GameObject[] loot = GameObject.FindGameObjectsWithTag("Loot");
+        foreach (GameObject item in loot)
+        {
+            Destroy(item);
+        }
+
+        // Destroy character
+        GameObject temp = GameObject.FindGameObjectWithTag("Player");
+        Destroy(temp);
+    }
+
+    private void ResetField()
+    {
+        CleanGameField();
+        SpawnCharacter();
+    }
+
+    private void SpawnCharacter()
+    {
+        // Check which character is equipped
+        foreach (var character in characters)
+        {
+            if (StoreInventory.IsVirtualGoodEquipped(character.id))
+            {
+                Instantiate(character.prefab);
+                break;
             }
         }
     }
@@ -429,4 +484,23 @@ public class SpawnController : MonoBehaviour {
         }
         GameObject newEnemy = Instantiate(enemy[enemySetter]);
     }
+
+    public void SpawnLoot()
+    {
+        Instantiate(loot);
+        lootSpawned = true;
+    }
+
+    public void ResetLootTimer()
+    {
+        timeTillNextLoot = lootTimer;
+        lootSpawned = false;
+    }
+}
+
+[System.Serializable]
+public class Character : System.Object
+{
+    public string id;
+    public GameObject prefab;
 }
