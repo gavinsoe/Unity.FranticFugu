@@ -2,6 +2,9 @@
 using System.Collections;
 using Soomla.Highway;
 using Soomla.Store;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
+using GoogleMobileAds.Api;
 
 public class SpawnController : MonoBehaviour {
     public static SpawnController instance;
@@ -25,6 +28,9 @@ public class SpawnController : MonoBehaviour {
     private bool invincibility;
     private float invincCounter;
     public bool phaseChange;
+
+    private BannerView bannerView;
+    private InterstitialAd interstitial;
 
     public GameObject loot;
     public float lootTimer;
@@ -101,6 +107,17 @@ public class SpawnController : MonoBehaviour {
 
         // Initialise Soomla Store
         SoomlaStore.Initialize(new FranticFuguAssets());
+
+        /*
+        // Sign in to Google Play Game Services
+        Social.localUser.Authenticate((bool success) =>
+        {
+            // handle success or failure
+        });
+         */
+
+        // Admob Banner Request
+        RequestBanner();
 
         // Temporary for testing
         /*StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, 450);
@@ -204,6 +221,9 @@ public class SpawnController : MonoBehaviour {
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
         GUIStore.instance.Hide();
+
+        // Admob Banner
+        bannerView.Hide();
     }
 
     public void Store()
@@ -214,6 +234,9 @@ public class SpawnController : MonoBehaviour {
         endCanvas.SetActive(false);
         GUIStore.instance.Show();
         PCController.instance.gameObject.SetActive(false);
+
+        // Admob Banner
+        bannerView.Hide();
     }
 
     public void Home()
@@ -226,6 +249,9 @@ public class SpawnController : MonoBehaviour {
         videoCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
+
+        // Admob Banner
+        bannerView.Show();
     }
 
     public void PauseGame()
@@ -237,6 +263,9 @@ public class SpawnController : MonoBehaviour {
         endCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
+
+        // Admob Banner
+        bannerView.Show();
     }
 
     public void UnpauseGame()
@@ -248,6 +277,9 @@ public class SpawnController : MonoBehaviour {
         endCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
+
+        // Admob Banner
+        bannerView.Hide();
     }
 
     public void EndGame()
@@ -269,6 +301,9 @@ public class SpawnController : MonoBehaviour {
             }
             else
             {
+                // Admob Banner
+                bannerView.Show();
+
                 CleanGameField();
             }
 
@@ -278,6 +313,11 @@ public class SpawnController : MonoBehaviour {
             {
                 PlayerPrefs.SetFloat("HighScore", time);
                 PlayerPrefs.Save();
+
+                /*
+                // Post to leaderboard
+                Social.ReportScore((long)time, "LEADERBOARD_ID", (bool success) => { });
+                 */
             }
         }
     }
@@ -340,7 +380,7 @@ public class SpawnController : MonoBehaviour {
     public void WatchVideo()
     {
         //Watch Video
-
+        interstitial.Show();
         videoWatched = true;
         invincibility = true;
         invincCounter = 0f;
@@ -682,6 +722,67 @@ public class SpawnController : MonoBehaviour {
     {
         timeTillNextLoot = lootTimer;
         lootSpawned = false;
+    }
+
+    public void ShowLeaderboard()
+    {
+        PlayGamesPlatform.Instance.ShowLeaderboardUI("LEADERBOARD_ID");
+    }
+
+    private void RequestBanner()
+    {
+    #if UNITY_ANDROID
+        string adUnitId = "INSERT_ANDROID_BANNER_AD_UNIT_ID_HERE";
+    #elif UNITY_IPHONE
+        string adUnitId = "INSERT_IOS_BANNER_AD_UNIT_ID_HERE";
+    #else
+        string adUnitId = "unexpected_platform";
+    #endif
+
+        // Create a 320x50 banner at the bottom of the screen.
+        bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+        // Create an empty ad request
+        AdRequest request = new AdRequest.Builder().Build();
+        // Load the banner with the request
+        bannerView.LoadAd(request);
+
+        // For Custom ad size
+        /*
+         * AdSize adSize = new AdSize(250, 250);
+         * BannerView bannerView = new BannerView(adUnitId, adSize, AdPosition.Bottom);
+         */
+
+        // To Test Ads without generating false impressions
+        /*
+         * AdRequest request = new AdRequest.Builder()
+         *      .AddTestDevice(AdRequest.TestDeviceSimulator)   // Simulator
+         *      .AddTestDevice("DEVICE_ID")                     // can only be found in the logs
+         *      .Build();
+         */
+    }
+
+    private void RequestInterstitial()
+    {
+    #if UNITY_ANDROID
+        string adUnitId = "INSERT_INTERSTITIAL_BANNER_AD_UNIT_ID_HERE";
+    #elif UNITY_IPHONE
+        string adUnitId = "INSERT_IOS_INTERSTITIAL_AD_UNIT_ID_HERE";
+    #else
+        string adUnitId = "unexpected_platform";
+    #endif
+
+        // Initialize an InterstitialAd.
+        interstitial = new InterstitialAd(adUnitId);
+        // Create an empty ad request;
+        AdRequest request = new AdRequest.Builder().Build();
+        // Load the interstitial with the request.
+        interstitial.LoadAd(request);
+    }
+
+    void OnApplicationQuit()
+    {
+        bannerView.Destroy();
+        interstitial.Destroy();
     }
 }
 

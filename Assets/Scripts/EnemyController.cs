@@ -261,6 +261,7 @@ public class EnemyController : MonoBehaviour {
     }
      */
 
+    /*
     void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log("TRIGGER2");
@@ -270,6 +271,7 @@ public class EnemyController : MonoBehaviour {
             SpawnController.instance.EndGame();
         }
     }
+     */
 
     private void UpdateSortingLayer(int startPoint)
     {
