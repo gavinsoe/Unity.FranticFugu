@@ -112,7 +112,6 @@ public class PCController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    /*
     void OnTriggerEnter(Collider collider)
     {
         Debug.Log("TRIGGER1");
@@ -122,5 +121,4 @@ public class PCController : MonoBehaviour
             SpawnController.instance.EndGame();
         }
     }
-     * */
 }

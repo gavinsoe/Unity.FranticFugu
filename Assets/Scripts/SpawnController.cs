@@ -264,7 +264,7 @@ public class SpawnController : MonoBehaviour {
 
             if (!videoWatched)
             {
-                videoWatched = true;
+                //videoWatched = true;
                 videoCanvas.SetActive(true);
             }
             else
@@ -341,6 +341,7 @@ public class SpawnController : MonoBehaviour {
     {
         //Watch Video
 
+        videoWatched = true;
         invincibility = true;
         invincCounter = 0f;
         //GameObject temp = GameObject.FindGameObjectWithTag("Player");
@@ -365,6 +366,7 @@ public class SpawnController : MonoBehaviour {
 
     public void DontWatchVideo()
     {
+        videoWatched = true;
         GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject item in list)
         {
