@@ -118,6 +118,7 @@ public class SpawnController : MonoBehaviour {
 
         // Admob Banner Request
         RequestBanner();
+        RequestInterstitial();
 
         // Temporary for testing
         /*StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, 450);
@@ -732,7 +733,7 @@ public class SpawnController : MonoBehaviour {
     private void RequestBanner()
     {
     #if UNITY_ANDROID
-        string adUnitId = "INSERT_ANDROID_BANNER_AD_UNIT_ID_HERE";
+        string adUnitId = "ca-app-pub-1741811527316190/7681476465";
     #elif UNITY_IPHONE
         string adUnitId = "INSERT_IOS_BANNER_AD_UNIT_ID_HERE";
     #else
@@ -742,7 +743,11 @@ public class SpawnController : MonoBehaviour {
         // Create a 320x50 banner at the bottom of the screen.
         bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
         // Create an empty ad request
-        AdRequest request = new AdRequest.Builder().Build();
+        //AdRequest request = new AdRequest.Builder().Build();
+        AdRequest request = new AdRequest.Builder()
+               .AddTestDevice(AdRequest.TestDeviceSimulator)   // Simulator
+               .AddTestDevice("39AD9A301542E7F5")                     // can only be found in the logs
+               .Build();
         // Load the banner with the request
         bannerView.LoadAd(request);
 
@@ -764,7 +769,7 @@ public class SpawnController : MonoBehaviour {
     private void RequestInterstitial()
     {
     #if UNITY_ANDROID
-        string adUnitId = "INSERT_INTERSTITIAL_BANNER_AD_UNIT_ID_HERE";
+        string adUnitId = "ca-app-pub-1741811527316190/9158209664";
     #elif UNITY_IPHONE
         string adUnitId = "INSERT_IOS_INTERSTITIAL_AD_UNIT_ID_HERE";
     #else
@@ -774,7 +779,11 @@ public class SpawnController : MonoBehaviour {
         // Initialize an InterstitialAd.
         interstitial = new InterstitialAd(adUnitId);
         // Create an empty ad request;
-        AdRequest request = new AdRequest.Builder().Build();
+        //AdRequest request = new AdRequest.Builder().Build();
+        AdRequest request = new AdRequest.Builder()
+               .AddTestDevice(AdRequest.TestDeviceSimulator)   // Simulator
+               .AddTestDevice("39AD9A301542E7F5")                     // can only be found in the logs
+               .Build();
         // Load the interstitial with the request.
         interstitial.LoadAd(request);
     }
