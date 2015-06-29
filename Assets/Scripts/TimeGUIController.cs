@@ -12,6 +12,6 @@ public class TimeGUIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = "Time: " + SpawnController.instance.time.ToString("F2");
+        text.text = SpawnController.instance.time.ToString("F2");
 	}
 }

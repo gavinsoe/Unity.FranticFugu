@@ -211,7 +211,9 @@
     <Compile Include="Assets\Plugins\Soomla\Store\rewards\VirtualItemReward.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+    <None Include="Assets\Plugins\Android\GoogleMobileAdsPlugin\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\google-play-services_lib\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\google-play-services_lib\proguard.txt" />
     <None Include="Assets\Plugins\Android\google-play-services_lib\README.txt" />

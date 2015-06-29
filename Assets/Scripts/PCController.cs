@@ -112,7 +112,7 @@ public class PCController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log("TRIGGER1");
         if (collider.gameObject.CompareTag("Enemy") == true)
