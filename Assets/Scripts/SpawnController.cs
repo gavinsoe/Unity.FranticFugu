@@ -25,7 +25,7 @@ public class SpawnController : MonoBehaviour {
     private double phaseTimer;
     public int phasePicker;
     private bool videoWatched;
-    private bool invincibility;
+    public bool invincibility;
     private float invincCounter;
     public bool phaseChange;
 

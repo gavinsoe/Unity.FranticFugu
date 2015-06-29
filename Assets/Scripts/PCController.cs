@@ -16,6 +16,9 @@ public class PCController : MonoBehaviour
     private Vector2 touchCurrent;
 
     private float worldWidth, worldHeight;
+    
+    public float fadeDuration;
+    private bool invincibilityTriggered;
 
     void Awake()
     {
@@ -104,6 +107,21 @@ public class PCController : MonoBehaviour
                                 Quaternion.Euler(0, 0, targetAngle),
                                 turnSpeed * Time.deltaTime);
              */
+
+            // Check if character is invincible
+            if (SpawnController.instance.invincibility && !invincibilityTriggered)
+            {
+                invincibilityTriggered = true;
+                // Start fading in and out
+                FadeOut();
+            }
+            else if (!SpawnController.instance.invincibility && invincibilityTriggered)
+            {
+                invincibilityTriggered = true;
+                // Stop fading in and out
+                iTween.StopByName("fade");
+                MakeVisible();
+            }
         }
 	}
 
@@ -120,5 +138,28 @@ public class PCController : MonoBehaviour
             // Dead
             SpawnController.instance.EndGame();
         }
+    }
+
+    void FadeIn()
+    {
+       iTween.FadeTo(gameObject,
+                     iTween.Hash("name", "fade",
+                                 "alpha", 1,
+                                 "time", fadeDuration,
+                                 "oncomplete","FadeOut"));
+    }
+
+    void FadeOut()
+    {
+        iTween.FadeTo(gameObject,
+                        iTween.Hash("name", "fade",
+                                    "alpha", 0,
+                                    "time", fadeDuration,
+                                    "oncomplete", "FadeIn"));
+    }
+
+    void MakeVisible()
+    {
+        iTween.FadeTo(gameObject,1,0.1f);
     }
 }

@@ -234,6 +234,7 @@
     <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-zh-rTW\common_strings.xml" />
     <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-zu\common_strings.xml" />
     <None Include="Assets\Plugins\Android\MainLibProj\AndroidManifest.xml" />
+    <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
     <None Include="Assets\WebPlayerTemplates\SoomlaConfig\android\android-profile-google\google-play-services_lib\AndroidManifest.xml" />
     <None Include="Assets\WebPlayerTemplates\SoomlaConfig\android\android-profile-google\google-play-services_lib\proguard.txt" />
     <None Include="Assets\WebPlayerTemplates\SoomlaConfig\android\android-profile-google\google-play-services_lib\README.txt" />
