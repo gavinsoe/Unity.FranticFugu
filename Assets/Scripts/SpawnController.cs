@@ -313,8 +313,17 @@ public class SpawnController : MonoBehaviour {
 
                 CleanGameField();
 
+                // Chance to be rewarded bonus sponges
                 if(time >= 60f)
-                    bonusVideoCanvas.SetActive(true);
+                {
+                    // random float number between and min [inclusive] and max [inclusive] (Read Only).
+                    // 1 = true, 0 = false
+                    int getBonus = Random.Range(0, 2);
+                    if (getBonus == 1)
+                    {
+                        bonusVideoCanvas.SetActive(true);
+                    }
+                }
             }
 
             // Do Highest score check and save
@@ -419,12 +428,8 @@ public class SpawnController : MonoBehaviour {
             interstitial.Show();
         }
 
-        int chance = Random.Range(0, 1);
-        if (chance == 1)
-        {
-            int minutes = Mathf.FloorToInt(time) / 60;
-            StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
-        }
+        int minutes = Mathf.FloorToInt(time) / 60;
+        StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
 
         RequestInterstitial();
         bonusVideoCanvas.SetActive(false);
@@ -434,14 +439,17 @@ public class SpawnController : MonoBehaviour {
     public void DontWatchVideo()
     {
         videoWatched = true;
-        GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
+        //CleanGameField();
+        EndGame();
+        videoCanvas.SetActive(false);
+        /*GameObject[] list = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject item in list)
         {
             Destroy(item);
         }
         GameObject temp = GameObject.FindGameObjectWithTag("Player");
         Destroy(temp);
-        videoCanvas.SetActive(false);
+        videoCanvas.SetActive(false);*/
     }
 
     public void DontWatchBonusVideo()
@@ -777,7 +785,7 @@ public class SpawnController : MonoBehaviour {
         //AdRequest request = new AdRequest.Builder().Build();
         AdRequest request = new AdRequest.Builder()
                .AddTestDevice(AdRequest.TestDeviceSimulator)   // Simulator
-               .AddTestDevice("3de2c1414b9811c9")                     // can only be found in the logs
+               .AddTestDevice("39AD9A301542E7F5")                     // can only be found in the logs
                .Build();
         // Load the banner with the request
         bannerView.LoadAd(request);
@@ -813,7 +821,7 @@ public class SpawnController : MonoBehaviour {
         //AdRequest request = new AdRequest.Builder().Build();
         AdRequest request = new AdRequest.Builder()
                .AddTestDevice(AdRequest.TestDeviceSimulator)   // Simulator
-               .AddTestDevice("3de2c1414b9811c9")                     // can only be found in the logs
+               .AddTestDevice("39AD9A301542E7F5")                     // can only be found in the logs
                .Build();
         // Load the interstitial with the request.
         interstitial.LoadAd(request);
