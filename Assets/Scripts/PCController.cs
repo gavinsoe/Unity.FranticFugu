@@ -25,7 +25,7 @@ public class PCController : MonoBehaviour
         // make sure there is only 1 instance of this class.
         //if (instance == null)
         //{
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             instance = this;
         //}
             /*
@@ -113,13 +113,12 @@ public class PCController : MonoBehaviour
             {
                 invincibilityTriggered = true;
                 // Start fading in and out
-                FadeOut();
+                Fade();
             }
             else if (!SpawnController.instance.invincibility && invincibilityTriggered)
             {
                 invincibilityTriggered = true;
                 // Stop fading in and out
-                iTween.StopByName("fade");
                 MakeVisible();
             }
         }
@@ -140,26 +139,18 @@ public class PCController : MonoBehaviour
         }
     }
 
-    void FadeIn()
+    void Fade()
     {
        iTween.FadeTo(gameObject,
                      iTween.Hash("name", "fade",
-                                 "alpha", 1,
+                                 "alpha", 0,
                                  "time", fadeDuration,
-                                 "oncomplete","FadeOut"));
-    }
-
-    void FadeOut()
-    {
-        iTween.FadeTo(gameObject,
-                        iTween.Hash("name", "fade",
-                                    "alpha", 0,
-                                    "time", fadeDuration,
-                                    "oncomplete", "FadeIn"));
+                                 "looptype",iTween.LoopType.pingPong));
     }
 
     void MakeVisible()
     {
-        iTween.FadeTo(gameObject,1,0.1f);
+        //iTween.StopByName("fade");
+        iTween.FadeTo(gameObject, 1, 0.1f);
     }
 }
