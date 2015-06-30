@@ -10,7 +10,7 @@ public class SpawnController : MonoBehaviour {
     public static SpawnController instance;
 
     private GameObject startCanvas, gameCanvas, pauseCanvas, endCanvas;
-    private GameObject videoCanvas;
+    private GameObject videoCanvas, bonusVideoCanvas;
 
     public GameObject player;
     public GameObject[] enemy;
@@ -56,6 +56,7 @@ public class SpawnController : MonoBehaviour {
             pauseCanvas = GameObject.Find("PauseCanvas");
             endCanvas = GameObject.Find("EndCanvas");
             videoCanvas = GameObject.Find("VideoCanvas");
+            bonusVideoCanvas = GameObject.Find("BonusVideoCanvas");
         }
         else if (instance != this)
         {
@@ -221,6 +222,7 @@ public class SpawnController : MonoBehaviour {
         gameCanvas.SetActive(true);
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
+        bonusVideoCanvas.SetActive(false);
         GUIStore.instance.Hide();
 
         // Admob Banner
@@ -233,6 +235,7 @@ public class SpawnController : MonoBehaviour {
         gameCanvas.SetActive(false);
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
+        bonusVideoCanvas.SetActive(false);
         GUIStore.instance.Show();
         PCController.instance.gameObject.SetActive(false);
 
@@ -248,6 +251,7 @@ public class SpawnController : MonoBehaviour {
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
         videoCanvas.SetActive(false);
+        bonusVideoCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
 
@@ -262,6 +266,7 @@ public class SpawnController : MonoBehaviour {
         gameCanvas.SetActive(false);
         pauseCanvas.SetActive(true);
         endCanvas.SetActive(false);
+        bonusVideoCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
 
@@ -276,6 +281,7 @@ public class SpawnController : MonoBehaviour {
         gameCanvas.SetActive(true);
         pauseCanvas.SetActive(false);
         endCanvas.SetActive(false);
+        bonusVideoCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
 
@@ -306,6 +312,9 @@ public class SpawnController : MonoBehaviour {
                 bannerView.Show();
 
                 CleanGameField();
+
+                if(time >= 60f)
+                    bonusVideoCanvas.SetActive(true);
             }
 
             // Do Highest score check and save
@@ -315,10 +324,8 @@ public class SpawnController : MonoBehaviour {
                 PlayerPrefs.SetFloat("HighScore", time);
                 PlayerPrefs.Save();
 
-                /*
                 // Post to leaderboard
-                Social.ReportScore((long)time, "LEADERBOARD_ID", (bool success) => { });
-                 */
+                Social.ReportScore((long)time, "CgkIi-yM2-IXEAIQAQ", (bool success) => { });
             }
         }
     }
@@ -392,13 +399,6 @@ public class SpawnController : MonoBehaviour {
         //GameObject temp = GameObject.FindGameObjectWithTag("Player");
         //temp.GetComponent<PolygonCollider2D>().enabled = false;
 
-        int chance = Random.Range(0, 1);
-        if (chance == 1)
-        {
-            int minutes = Mathf.FloorToInt(time) / 60;
-            StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
-        }
-
         RequestInterstitial();
 
         paused = false;
@@ -409,6 +409,26 @@ public class SpawnController : MonoBehaviour {
         videoCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
+    }
+
+    public void WatchBonusVideo()
+    {
+        //Watch Video
+        if (interstitial.IsLoaded())
+        {
+            interstitial.Show();
+        }
+
+        int chance = Random.Range(0, 1);
+        if (chance == 1)
+        {
+            int minutes = Mathf.FloorToInt(time) / 60;
+            StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
+        }
+
+        RequestInterstitial();
+        bonusVideoCanvas.SetActive(false);
+        GUIStore.instance.Hide();
     }
 
     public void DontWatchVideo()
@@ -422,6 +442,11 @@ public class SpawnController : MonoBehaviour {
         GameObject temp = GameObject.FindGameObjectWithTag("Player");
         Destroy(temp);
         videoCanvas.SetActive(false);
+    }
+
+    public void DontWatchBonusVideo()
+    {
+        bonusVideoCanvas.SetActive(false);
     }
 
     public void SpawnControl()
@@ -733,7 +758,7 @@ public class SpawnController : MonoBehaviour {
 
     public void ShowLeaderboard()
     {
-        PlayGamesPlatform.Instance.ShowLeaderboardUI("LEADERBOARD_ID");
+        PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkIi-yM2-IXEAIQAQ");
     }
 
     private void RequestBanner()
