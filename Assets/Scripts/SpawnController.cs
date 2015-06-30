@@ -381,7 +381,11 @@ public class SpawnController : MonoBehaviour {
     public void WatchVideo()
     {
         //Watch Video
-        interstitial.Show();
+        if (interstitial.IsLoaded())
+        {
+            interstitial.Show();
+        }
+        
         videoWatched = true;
         invincibility = true;
         invincCounter = 0f;
@@ -394,6 +398,8 @@ public class SpawnController : MonoBehaviour {
             int minutes = Mathf.FloorToInt(time) / 60;
             StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
         }
+
+        RequestInterstitial();
 
         paused = false;
         startCanvas.SetActive(false);
@@ -746,7 +752,7 @@ public class SpawnController : MonoBehaviour {
         //AdRequest request = new AdRequest.Builder().Build();
         AdRequest request = new AdRequest.Builder()
                .AddTestDevice(AdRequest.TestDeviceSimulator)   // Simulator
-               .AddTestDevice("39AD9A301542E7F5")                     // can only be found in the logs
+               .AddTestDevice("3de2c1414b9811c9")                     // can only be found in the logs
                .Build();
         // Load the banner with the request
         bannerView.LoadAd(request);
@@ -782,7 +788,7 @@ public class SpawnController : MonoBehaviour {
         //AdRequest request = new AdRequest.Builder().Build();
         AdRequest request = new AdRequest.Builder()
                .AddTestDevice(AdRequest.TestDeviceSimulator)   // Simulator
-               .AddTestDevice("39AD9A301542E7F5")                     // can only be found in the logs
+               .AddTestDevice("3de2c1414b9811c9")                     // can only be found in the logs
                .Build();
         // Load the interstitial with the request.
         interstitial.LoadAd(request);
