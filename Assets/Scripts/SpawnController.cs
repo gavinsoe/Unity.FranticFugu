@@ -3,6 +3,7 @@ using System.Collections;
 using Soomla.Highway;
 using Soomla.Store;
 using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 using GoogleMobileAds.Api;
 
@@ -325,32 +326,46 @@ public class SpawnController : MonoBehaviour {
                     if (getBonus == 1)
                     {
                         bonusVideoCanvas.SetActive(true);
+                    } 
+                    else
+                    {
+                        UpdateHighscore();
+
                     }
+                } 
+                else
+                {
+                    UpdateHighscore();
                 }
             }
 
-            // Do Highest score check and save
-            float highScore = PlayerPrefs.GetFloat("HighScore");
-            if (time > highScore)
-            {
-                PlayerPrefs.SetFloat("HighScore", time);
-                PlayerPrefs.Save();
+        }
+    }
 
-                // Post to leaderboard
-                if (Social.localUser.authenticated)
+    private void UpdateHighscore()
+    {
+        // Do Highest score check and save
+        float highScore = PlayerPrefs.GetFloat("HighScore");
+        
+        if (time > highScore)
+        {
+            PlayerPrefs.SetFloat("HighScore", time);
+            PlayerPrefs.Save();
+
+            // Post to leaderboard
+            if (Social.localUser.authenticated)
+            {
+                Social.ReportScore(System.Convert.ToInt64(time * 100), leaderboard, (bool success) =>
                 {
-                    Social.ReportScore((long)time, leaderboard, (bool success) =>
+                    if (success)
                     {
-                        if (success)
-                        {
-                            ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
-                        }
-                        else
-                        {
-                            //Debug.Log("Login failed for some reason");
-                        }
-                    });
-                }
+                        ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
+                    }
+                    else
+                    {
+                        //Debug.Log("Login failed for some reason");
+                    }
+                });
             }
         }
     }
@@ -436,22 +451,6 @@ public class SpawnController : MonoBehaviour {
         PCController.instance.gameObject.SetActive(true);
     }
 
-    public void WatchBonusVideo()
-    {
-        //Watch Video
-        if (interstitial.IsLoaded())
-        {
-            interstitial.Show();
-        }
-
-        int minutes = Mathf.FloorToInt(time) / 60;
-        StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
-
-        RequestInterstitial();
-        bonusVideoCanvas.SetActive(false);
-        GUIStore.instance.Hide();
-    }
-
     public void DontWatchVideo()
     {
         videoWatched = true;
@@ -468,9 +467,27 @@ public class SpawnController : MonoBehaviour {
         videoCanvas.SetActive(false);*/
     }
 
+    public void WatchBonusVideo()
+    {
+        //Watch Video
+        if (interstitial.IsLoaded())
+        {
+            interstitial.Show();
+        }
+
+        int minutes = Mathf.FloorToInt(time) / 60;
+        StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
+
+        RequestInterstitial();
+        bonusVideoCanvas.SetActive(false);
+        GUIStore.instance.Hide();
+        UpdateHighscore();
+    }
+
     public void DontWatchBonusVideo()
     {
         bonusVideoCanvas.SetActive(false);
+        UpdateHighscore();
     }
 
     public void SpawnControl()
