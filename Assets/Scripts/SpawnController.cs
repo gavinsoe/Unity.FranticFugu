@@ -8,6 +8,7 @@ using GoogleMobileAds.Api;
 
 public class SpawnController : MonoBehaviour {
     public static SpawnController instance;
+    private string leaderboard = "CgkIi-yM2-IXEAIQAQ";
 
     private GameObject startCanvas, gameCanvas, pauseCanvas, endCanvas;
     private GameObject videoCanvas, bonusVideoCanvas;
@@ -109,8 +110,9 @@ public class SpawnController : MonoBehaviour {
         // Initialise Soomla Store
         SoomlaStore.Initialize(new FranticFuguAssets());
 
-        
         // Sign in to Google Play Game Services
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
         /*Social.localUser.Authenticate((bool success) =>
         {
             // handle success or failure
@@ -335,7 +337,20 @@ public class SpawnController : MonoBehaviour {
                 PlayerPrefs.Save();
 
                 // Post to leaderboard
-                Social.ReportScore((long)time, "CgkIi-yM2-IXEAIQAQ", (bool success) => { });
+                if (Social.localUser.authenticated)
+                {
+                    Social.ReportScore((long)time, leaderboard, (bool success) =>
+                    {
+                        if (success)
+                        {
+                            ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
+                        }
+                        else
+                        {
+                            //Debug.Log("Login failed for some reason");
+                        }
+                    });
+                }
             }
         }
     }
@@ -767,9 +782,9 @@ public class SpawnController : MonoBehaviour {
 
     private void GooglePlaySignIn()
     {
-        if (!PlayGamesPlatform.Instance.localUser.authenticated)
+        if (!Social.localUser.authenticated)
         {
-            PlayGamesPlatform.Instance.Authenticate((bool success) =>
+            Social.localUser.Authenticate((bool success) =>
             {
                 if (success)
                 {
@@ -779,13 +794,13 @@ public class SpawnController : MonoBehaviour {
                 {
                     Debug.Log("Oh... we're not signed in.");
                 }
-            },false);
+            });
         }
     }
 
     public void ShowLeaderboard()
     {
-        PlayGamesPlatform.Instance.ShowLeaderboardUI("CgkIi-yM2-IXEAIQAQ");
+        ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
     }
 
     private void RequestBanner()
