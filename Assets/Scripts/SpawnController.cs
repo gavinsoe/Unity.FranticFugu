@@ -109,13 +109,14 @@ public class SpawnController : MonoBehaviour {
         // Initialise Soomla Store
         SoomlaStore.Initialize(new FranticFuguAssets());
 
-        /*
+        
         // Sign in to Google Play Game Services
-        Social.localUser.Authenticate((bool success) =>
+        /*Social.localUser.Authenticate((bool success) =>
         {
             // handle success or failure
-        });
-         */
+        });*/
+        GooglePlaySignIn();
+        
 
         // Admob Banner Request
         RequestBanner();
@@ -762,6 +763,24 @@ public class SpawnController : MonoBehaviour {
     {
         timeTillNextLoot = lootTimer;
         lootSpawned = false;
+    }
+
+    private void GooglePlaySignIn()
+    {
+        if (!PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            PlayGamesPlatform.Instance.Authenticate((bool success) =>
+            {
+                if (success)
+                {
+                    Debug.Log("We're signed in! Welcome " + PlayGamesPlatform.Instance.localUser.userName);
+                }
+                else
+                {
+                    Debug.Log("Oh... we're not signed in.");
+                }
+            },false);
+        }
     }
 
     public void ShowLeaderboard()
