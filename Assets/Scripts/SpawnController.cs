@@ -33,6 +33,7 @@ public class SpawnController : MonoBehaviour {
 
     private BannerView bannerView;
     private InterstitialAd interstitial;
+	private InterstitialAd interstitial2;
 
     public GameObject loot;
     public float lootTimer;
@@ -124,6 +125,7 @@ public class SpawnController : MonoBehaviour {
         // Admob Banner Request
         RequestBanner();
         RequestInterstitial();
+		RequestInterstitialBonus();
 
         // Temporary for testing
         /*StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, 450);
@@ -441,6 +443,7 @@ public class SpawnController : MonoBehaviour {
 
         RequestInterstitial();
 
+		/*
         paused = false;
         startCanvas.SetActive(false);
         gameCanvas.SetActive(true);
@@ -449,6 +452,7 @@ public class SpawnController : MonoBehaviour {
         videoCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
+        */
     }
 
     public void DontWatchVideo()
@@ -470,18 +474,18 @@ public class SpawnController : MonoBehaviour {
     public void WatchBonusVideo()
     {
         //Watch Video
-        if (interstitial.IsLoaded())
+        if (interstitial2.IsLoaded())
         {
-            interstitial.Show();
+            interstitial2.Show();
         }
 
         int minutes = Mathf.FloorToInt(time) / 60;
         StoreInventory.GiveItem(FranticFuguAssets.CURRENCY_SPONGE_ID, minutes * 4);
 
-        RequestInterstitial();
+        RequestInterstitialBonus();
         bonusVideoCanvas.SetActive(false);
         GUIStore.instance.Hide();
-        UpdateHighscore();
+        
     }
 
     public void DontWatchBonusVideo()
@@ -867,6 +871,9 @@ public class SpawnController : MonoBehaviour {
 
         // Initialize an InterstitialAd.
         interstitial = new InterstitialAd(adUnitId);
+
+		interstitial.AdClosed += HandleAdClosed;
+
         // Create an empty ad request;
         //AdRequest request = new AdRequest.Builder().Build();
         AdRequest request = new AdRequest.Builder()
@@ -876,11 +883,52 @@ public class SpawnController : MonoBehaviour {
         interstitial.LoadAd(request);
     }
 
+	private void RequestInterstitialBonus()
+	{
+		#if UNITY_ANDROID
+		string adUnitId = "ca-app-pub-1741811527316190/9158209664";
+		#elif UNITY_IPHONE
+		string adUnitId = "ca-app-pub-1741811527316190/3432746861";
+		#else
+		string adUnitId = "unexpected_platform";
+		#endif
+		
+		// Initialize an InterstitialAd.
+		interstitial2 = new InterstitialAd(adUnitId);
+
+		interstitial2.AdClosed += HandleBonusAdClosed;
+		
+		// Create an empty ad request;
+		//AdRequest request = new AdRequest.Builder().Build();
+		AdRequest request = new AdRequest.Builder()
+			.SetBirthday(new System.DateTime(2003, 1, 1))
+				.Build();
+		// Load the interstitial with the request.
+		interstitial2.LoadAd(request);
+	}
+
     void OnApplicationQuit()
     {
         bannerView.Destroy();
         interstitial.Destroy();
     }
+
+	public void HandleAdClosed(object sender, System.EventArgs args)
+	{
+		paused = false;
+		startCanvas.SetActive(false);
+		gameCanvas.SetActive(true);
+		pauseCanvas.SetActive(false);
+		endCanvas.SetActive(false);
+		videoCanvas.SetActive(false);
+		GUIStore.instance.Hide();
+		PCController.instance.gameObject.SetActive(true);
+	}
+
+	public void HandleBonusAdClosed(object sender, System.EventArgs args)
+	{
+		UpdateHighscore();
+	}
 }
 
 [System.Serializable]
