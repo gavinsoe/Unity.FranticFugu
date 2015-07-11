@@ -7,3 +7,7 @@ Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll.meta
 Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll.meta
 /obj/
 *.apk
+UnityVS.frantic-fugu.CSharp.csproj
+UnityVS.frantic-fugu.CSharp.Editor.csproj
+UnityVS.frantic-fugu.CSharp.Plugins.csproj
+UnityVS.frantic-fugu.sln
