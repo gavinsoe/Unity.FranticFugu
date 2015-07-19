@@ -12,7 +12,7 @@ public class SpawnController : MonoBehaviour {
     private string leaderboard = "CgkIi-yM2-IXEAIQAQ";
 
     private GameObject startCanvas, gameCanvas, pauseCanvas, endCanvas;
-    private GameObject videoCanvas, bonusVideoCanvas;
+    private GameObject videoCanvas, bonusVideoCanvas, ratePopupCanvas;
 
     public GameObject player;
     public GameObject[] enemy;
@@ -30,6 +30,8 @@ public class SpawnController : MonoBehaviour {
     public bool invincibility;
     private float invincCounter;
     public bool phaseChange;
+    public int rateGame;
+    public int gameCount;
 
     private BannerView bannerView;
     private InterstitialAd interstitial;
@@ -60,6 +62,7 @@ public class SpawnController : MonoBehaviour {
             endCanvas = GameObject.Find("EndCanvas");
             videoCanvas = GameObject.Find("VideoCanvas");
             bonusVideoCanvas = GameObject.Find("BonusVideoCanvas");
+            ratePopupCanvas = GameObject.Find("RatePopupCanvas");
         }
         else if (instance != this)
         {
@@ -105,6 +108,9 @@ public class SpawnController : MonoBehaviour {
         phaseTimer = 20f;
         phasePicker = Random.Range(0, 7);
         phaseChange = false;
+
+        rateGame = PlayerPrefs.GetInt("RateGame");
+        gameCount = PlayerPrefs.GetInt("GameCount");
 
         // Initialise Soomla Highway (Online Statistics)
         SoomlaHighway.Initialize();
@@ -258,6 +264,7 @@ public class SpawnController : MonoBehaviour {
         endCanvas.SetActive(false);
         videoCanvas.SetActive(false);
         bonusVideoCanvas.SetActive(false);
+        ratePopupCanvas.SetActive(false);
         GUIStore.instance.Hide();
         PCController.instance.gameObject.SetActive(true);
 
@@ -310,7 +317,10 @@ public class SpawnController : MonoBehaviour {
             if (!videoWatched)
             {
                 //videoWatched = true;
-                videoCanvas.SetActive(true);
+                if (interstitial.IsLoaded())
+                {
+                    videoCanvas.SetActive(true);
+                }
             }
             else
             {
@@ -327,7 +337,10 @@ public class SpawnController : MonoBehaviour {
                     int getBonus = Random.Range(0, 2);
                     if (getBonus == 1)
                     {
-                        bonusVideoCanvas.SetActive(true);
+                        if (interstitial2.IsLoaded())
+                        {
+                            bonusVideoCanvas.SetActive(true);
+                        }
                     } 
                     else
                     {
@@ -368,6 +381,36 @@ public class SpawnController : MonoBehaviour {
                         //Debug.Log("Login failed for some reason");
                     }
                 });
+            }
+        }
+        else
+        {
+            // Post to leaderboard
+            if (Social.localUser.authenticated)
+            {
+                Social.ReportScore(System.Convert.ToInt64(time * 100), leaderboard, (bool success) =>
+                {
+                    if (success)
+                    {
+                        //((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
+                    }
+                    else
+                    {
+                        //Debug.Log("Login failed for some reason");
+                    }
+                });
+            }
+        }
+
+        if (rateGame == 0)
+        {
+            gameCount += 1;
+            PlayerPrefs.SetInt("GameCount", gameCount);
+
+            if (gameCount >= 30)
+            {
+                // Open rate popup
+                ratePopupCanvas.SetActive(true);
             }
         }
     }
@@ -929,6 +972,33 @@ public class SpawnController : MonoBehaviour {
 	{
 		UpdateHighscore();
 	}
+
+    public void RateGame()
+    {
+        rateGame = 1;
+        PlayerPrefs.SetInt("RateGame", 1);
+        ratePopupCanvas.SetActive(false);
+
+#if UNITY_ANDROID
+        Application.OpenURL("market://details?id=YOUR_ID");
+#elif UNITY_IPHONE
+        Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+#endif
+    }
+
+    public void RateLater()
+    {
+        gameCount = 0;
+        PlayerPrefs.SetInt("GameCount", 0);
+        ratePopupCanvas.SetActive(false);
+    }
+
+    public void RateNever()
+    {
+        rateGame = 1;
+        PlayerPrefs.SetInt("RateGame", 1);
+        ratePopupCanvas.SetActive(false);
+    }
 }
 
 [System.Serializable]
