@@ -1,0 +1,88 @@
+fileFormatVersion: 2
+guid: 979448fcd18b5e64aaaed6160e22302b
+timeCreated: 1436514821
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: juicy_bubble
+    21300002: juicy_coral_1
+    21300004: juicy_coral_2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 70
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: juicy_bubble
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 75
+        width: 131
+        height: 131
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: juicy_coral_1
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 83
+        width: 108
+        height: 158
+      alignment: 9
+      pivot: {x: .559040487, y: .0498662069}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: juicy_coral_2
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 81
+        width: 89
+        height: 87
+      alignment: 9
+      pivot: {x: .499999642, y: .0884388015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
