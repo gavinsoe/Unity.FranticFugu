@@ -6,10 +6,17 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 using GoogleMobileAds.Api;
+using UnityEngine.SocialPlatforms.GameCenter;
 
 public class SpawnController : MonoBehaviour {
     public static SpawnController instance;
+
+#if UNITY_ANDROID
     private string leaderboard = "CgkIi-yM2-IXEAIQAQ";
+#elif UNITY_IPHONE
+    private string leaderboard = "leaderboard.franticfugu";
+#endif
+    
 
     private GameObject startCanvas, gameCanvas, pauseCanvas, endCanvas;
     private GameObject videoCanvas, bonusVideoCanvas, ratePopupCanvas;
@@ -118,15 +125,17 @@ public class SpawnController : MonoBehaviour {
         // Initialise Soomla Store
         SoomlaStore.Initialize(new FranticFuguAssets());
 
+#if UNITY_ANDROID
         // Sign in to Google Play Game Services
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
-        /*Social.localUser.Authenticate((bool success) =>
+        GooglePlaySignIn();
+#elif UNITY_IPHONE
+        Social.localUser.Authenticate((bool success) =>
         {
             // handle success or failure
-        });*/
-        GooglePlaySignIn();
-        
+        });
+#endif
 
         // Admob Banner Request
         RequestBanner();
@@ -374,7 +383,11 @@ public class SpawnController : MonoBehaviour {
                 {
                     if (success)
                     {
+#if UNITY_ANDROID
                         ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
+#elif UNITY_IPHONE
+                        GameCenterPlatform.ShowLeaderboardUI(leaderboard, UnityEngine.SocialPlatforms.TimeScope.AllTime);
+#endif
                     }
                     else
                     {
@@ -864,7 +877,11 @@ public class SpawnController : MonoBehaviour {
 
     public void ShowLeaderboard()
     {
+#if UNITY_ANDROID
         ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
+#elif UNITY_IPHONE
+                        GameCenterPlatform.ShowLeaderboardUI(leaderboard, UnityEngine.SocialPlatforms.TimeScope.AllTime);
+#endif
     }
 
     private void RequestBanner()
