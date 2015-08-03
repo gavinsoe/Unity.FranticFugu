@@ -997,9 +997,9 @@ public class SpawnController : MonoBehaviour {
         ratePopupCanvas.SetActive(false);
 
 #if UNITY_ANDROID
-        Application.OpenURL("market://details?id=YOUR_ID");
+        Application.OpenURL("market://details?id=com.ARTIC.FranticFugu");
 #elif UNITY_IPHONE
-        Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+        Application.OpenURL("itms-apps://itunes.apple.com/app/frantic-fugu");
 #endif
     }
 
